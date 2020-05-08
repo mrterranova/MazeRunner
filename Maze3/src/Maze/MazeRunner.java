@@ -10,7 +10,7 @@ public class MazeRunner{
         intro();
     }
 
-    //
+    //intro
     public static void intro(){
         // global variables
         Scanner input = new Scanner(System.in);
@@ -18,7 +18,7 @@ public class MazeRunner{
         int moves = 0;
 
         //Introduction
-        System.out.println("Welcome to ");
+        System.out.println("\n\n\t\t\t\tWELCOME TO... ");
         art();
         try {
             Thread.sleep(1500);
@@ -26,7 +26,6 @@ public class MazeRunner{
             Thread.sleep(3000);
             System.out.println("Here is your current position: ");
             myMap.printMap();
-
             //now send to game
             gameBody(input, myMap, moves);
         } catch (InterruptedException e) {
@@ -39,8 +38,13 @@ public class MazeRunner{
         // as long as you did not win continue game procedures
         while (myMap.didIWin() == false) {
             String userInput = userMove(input);
-            int moving = canItMove(myMap, userInput, input, moves);
-            moves = 1 + moving;
+            int countAddMoves = canItMove(myMap, userInput, input, moves);
+            moves = 1 + countAddMoves;
+            if (moves < 90){
+                System.out.print("Moves: "+moves+ "\n");
+            } else {
+                System.err.print("(Moves: "+moves+"!!!)\n");
+            }
             getMovesMessage(moves, input);
 
             //if you did win handle replay option
@@ -51,36 +55,13 @@ public class MazeRunner{
         }
     }
 
-    //sends messages to the user of progress
-    public static int getMovesMessage(int moves, Scanner input) {
-        if (moves == 50 ){
-            System.err.println("Warning: You have made 50 moves, you have 50 remaining before the maze exit closes");
-        }
-        if (moves == 75){
-            System.err.println("Alert! You have made 75 moves, you only have 25 moves left to escape.");
-        }
-        if (moves == 80){
-            System.err.println("DANGER! You have made 90 moves, you only have 10 moves left to escape!!");
-        }
-        if (moves >=100){
-            System.err.println("Oh no! You took too long to escape, and now the maze exit is closed FOREVER >:[\n");
-        System.out.println("Would you care to play again? (y/n)");
-        char playAgain = input.next().charAt(0);
-        if (playAgain == 'y')
-            intro();
-        } else {
-//        System.exit(0);
-        }
-        return moves;
-    }
-
     // determine if user command is applicable
     public static String userMove(Scanner input) {
         String userInput = "";
         //guarantee user selection is only one option
         boolean incorrect = true;
         while (incorrect) {
-            System.out.println("Which direction?(R,L,D,U) ");
+            System.out.print("Which direction?(R,L,D,U) ");
             userInput = input.nextLine().toUpperCase();
             if(userInput.equals("R") || userInput.equals("L") || userInput.equals("D") || userInput.equals("U") || userInput.equals("STOP")){
                 incorrect = false;
@@ -156,7 +137,7 @@ public class MazeRunner{
     }
     public static void checkMoveUp(Maze myMap){
         if (myMap.canIMoveUp()){
-            myMap.moveDown();
+            myMap.moveUp();
         } else {
             System.out.println("You have reached a wall.");
         }
@@ -171,15 +152,36 @@ public class MazeRunner{
 
     // to navigate the pit in canIMove()
     public static int navigatePit(Maze myMap, Scanner input, String userInput, int moves){
-        System.out.println("Watch out! There's a pit ahead, jump it? (y/n)");
+        System.out.print("Watch out! There's a pit ahead, jump it? (y/n) ");
         String jump = input.nextLine();
         if (jump.equals("y")) {
+            moves = moves+1;
             myMap.jumpOverPit(userInput);
-            moves = moves + 2;
-
         } else {
             System.out.println(moves);
-            moves = moves--;
+            moves = moves-1;
+        }
+        return moves;
+    }
+
+    //sends messages to the user of progress
+    public static int getMovesMessage(int moves, Scanner input) {
+        if (moves == 50 ){
+            System.err.println("Warning: You have made 50 moves, you have 50 remaining before the maze exit closes");
+        }
+        if (moves == 75){
+            System.err.println("Alert! You have made 75 moves, you only have 25 moves left to escape.");
+        }
+        if (moves == 90){
+            System.err.println("DANGER! You have made 90 moves, you only have 10 moves left to escape!!");
+        }
+        if (moves >=100){
+            System.out.println("Oh no! You took too long to escape, and now the maze exit is closed FOREVER >:[\nWould you care to play again? (y/n)");
+            char playAgain = input.next().charAt(0);
+            if (playAgain == 'y')
+                intro();
+        } else {
+//        System.exit(0);
         }
         return moves;
     }
