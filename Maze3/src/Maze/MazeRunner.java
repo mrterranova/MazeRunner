@@ -72,49 +72,51 @@ public class MazeRunner{
 
     //determine if can move and move
     public static int canItMove(Maze myMap, String userInput, Scanner input, int moves) {
-//        System.out.println(myMap.canIMoveRight() + " "+ userInput);
-//        if (userInput.equals("R") && myMap.canIMoveRight() == true){
-//            myMap.moveRight();
-//        } else if(userInput.equals("L") && myMap.canIMoveLeft() == true){
-//            myMap.moveLeft();
-//        } else if(userInput.equals("U") && myMap.canIMoveUp() == true){
-//            myMap.moveUp();
-//        } else if(userInput.equals("D") && myMap.canIMoveDown() == true){
-//            myMap.moveDown();
-//        } else {
-//            if (myMap.isThereAPit(userInput)){
-//                navigatePit(myMap, input, userInput, moves);
-//            } else {
-//                System.err.println("You have reached a wall.");
-//            }
-//        }
-
-        if(myMap.isThereAPit(userInput)){
-            moves = navigatePit(myMap, input, userInput, moves);
+        if (userInput.equals("R") && myMap.canIMoveRight() == true){
+            myMap.moveRight();
+        } else if(userInput.equals("L") && myMap.canIMoveLeft() == true){
+            myMap.moveLeft();
+        } else if(userInput.equals("U") && myMap.canIMoveUp() == true){
+            myMap.moveUp();
+        } else if(userInput.equals("D") && myMap.canIMoveDown() == true){
+            myMap.moveDown();
+        } else if (userInput.equals("STOP")){
+            System.out.println("Now terminating game...");
+            endGame(input);
         } else {
-            switch (userInput) {
-                case "D":
-                    checkMoveDown(myMap);
-                    break;
-                case "U":
-                    checkMoveUp(myMap);
-                    break;
-                case "L":
-                    checkMoveLeft(myMap);
-                    break;
-                case "R":
-                    checkMoveRight(myMap);
-                    break;
-                case "STOP":
-                    System.out.println("Now terminating game...");
-                    endGame(input);
-                    break;
-                default:
-                    //this should never happen because of userMove();
-                    System.err.println("Incorrect command. Try again.");
-                    break;
+            if (myMap.isThereAPit(userInput)){
+                moves = navigatePit(myMap, input, userInput, moves);
+            } else {
+                System.err.println("You have reached a wall.");
             }
         }
+
+//        if(myMap.isThereAPit(userInput)){
+//            moves = navigatePit(myMap, input, userInput, moves);
+//        } else {
+//            switch (userInput) {
+//                case "D":
+//                    checkMoveDown(myMap);
+//                    break;
+//                case "U":
+//                    checkMoveUp(myMap);
+//                    break;
+//                case "L":
+//                    checkMoveLeft(myMap);
+//                    break;
+//                case "R":
+//                    checkMoveRight(myMap);
+//                    break;
+//                case "STOP":
+//                    System.out.println("Now terminating game...");
+//                    endGame(input);
+//                    break;
+//                default:
+//                    //this should never happen because of userMove();
+//                    System.err.println("Incorrect command. Try again.");
+//                    break;
+//            }
+//        }
         //always show new instance of map and return moves int.
         myMap.printMap();
         return moves;
@@ -206,7 +208,7 @@ public class MazeRunner{
         System.out.println(                "| || || || (___) |    /   )| (__      | (____)|| |   | ||   \\ | ||   \\ | || (__    | (____)|");
         System.out.println(                "| |(_)| ||  ___  |   /   / |  __)     |     __)| |   | || (\\ \\) || (\\ \\) ||  __)   |     __)");
         System.out.println(                "| |   | || (   ) |  /   /  | (        | (\\ (   | |   | || | \\   || | \\   || (      | (\\ (");
-        System.out.println(                "| )   ( || )   ( | /   (_/\\| (____/\\  | ) \\ \\__| (___) || )  \\  || )  \\  || (____/\\| ) \\ \\__");
+        System.out.println(                "| )   ( || )   ( | /   (_/\\| (____/ \\ | ) \\ \\__| (___) || )  \\  || )  \\  || (____/\\| ) \\ \\__");
         System.out.println(                "|/     \\||/     \\|(_______/(_______/  |/   \\__/(_______)|/    )_)|/    )_)(_______/|/   \\__/");
     }
 }

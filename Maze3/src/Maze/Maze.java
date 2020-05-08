@@ -80,8 +80,6 @@ public class Maze {
             return isThereAPit(-1, 0);
         } else if (dir.equals("D")) {
             return isThereAPit(1, 0);
-        } else if (dir.equals("STOP")){
-            return isThereAPit(0,0);
         } else {
             throw new IllegalArgumentException("I didn't understand the direction you entered");
         }
